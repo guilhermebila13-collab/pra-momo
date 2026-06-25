@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteio do Casal 🎲</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #2b2d42; /* Fundo escuro elegante */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #2b2d42;
+        }
+
+        .container {
+            text-align: center;
+            background: #edf2f4;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            max-width: 90%;
+            width: 450px;
+        }
+
+        h1 {
+            color: #d90429;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        p {
+            color: #6c757d;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        /* Visor da Roleta */
+        .visor-roleta {
+            background-color: #ffffff;
+            border: 4px dashed #8d99ae;
+            border-radius: 10px;
+            padding: 30px 10px;
+            margin-bottom: 30px;
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #2b2d42;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .visor-destaque {
+            border-color: #d90429 !important;
+            color: #d90429 !important;
+            box-shadow: 0 0 20px rgba(217, 4, 41, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Botões */
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        #btnGirar {
+            background-color: #8d99ae;
+            color: white;
+        }
+
+        #btnGirar:hover {
+            background-color: #2b2d42;
+        }
+
+        #btnAceitar {
+            background-color: #d90429;
+            color: white;
+            display: none; /* Escondido até o sorteio terminar */
+            box-shadow: 0 5px 15px rgba(217, 4, 41, 0.4);
+            animation: surgir 0.5s ease-out;
+        }
+
+        #btnAceitar:hover {
+            transform: scale(1.05);
+            background-color: #ef233c;
+        }
+
+        @keyframes surgir {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Roleta do Destino 🎲</h1>
+        <p>Deixe o universo decidir a nossa programação para hoje à noite...</p>
+        
+        <div class="visor-roleta" id="texto-roleta">
+            Clique no botão para girar!
+        </div>
+
+        <button id="btnGirar" onclick="iniciarSorteio()">Girar a Roleta 🎰</button>
+        <button id="btnAceitar" onclick="aceitarDestino()">Aceitar meu Destino 😏</button>
+    </div>
+
+    <script>
+        // Lista de opções falsas que vão piscar na tela
+        const opcoesFalsas = [
+            "Assistir Série", 
+            "Dormir Cedo", 
+            "Pedir Pizza", 
+            "Lavar a Louça", 
+            "Fazer Skincare", 
+            "Jogar Videogame", 
+            "Ver o TikTok",
+            "Dobrar as Roupas"
+        ];
+
+        // A opção que VAI cair sempre
+        const resultadoFinal = "Namorar Muito 🔥😏";
+
+        let intervalo;
+        let tempoSorteio = 0;
+
+        function iniciarSorteio() {
+            const visor = document.getElementById('texto-roleta');
+            const btnGirar = document.getElementById('btnGirar');
+            
+            // Desabilita o botão para não clicar duas vezes
+            btnGirar.disabled = true;
+            btnGirar.innerText = "Girando... 🔄";
+            btnGirar.style.backgroundColor = "#ccc";
+
+            // Faz os textos piscarem rápido
+            intervalo = setInterval(() => {
+                const indexAleatorio = Math.floor(Math.random() * opcoesFalsas.length);
+                visor.innerText = opcoesFalsas[indexAleatorio];
+                tempoSorteio += 100;
+
+                // Depois de 3 segundos (3000 milissegundos), a roleta para
+                if (tempoSorteio >= 3000) {
+                    clearInterval(intervalo);
+                    finalizarSorteio();
+                }
+            }, 100); // Muda o texto a cada 100ms
+        }
+
+        function finalizarSorteio() {
+            const visor = document.getElementById('texto-roleta');
+            const btnGirar = document.getElementById('btnGirar');
+            const btnAceitar = document.getElementById('btnAceitar');
+
+            // Crava o resultado final
+            visor.innerText = resultadoFinal;
+            visor.classList.add('visor-destaque');
+
+            // Esconde o botão de girar e mostra o botão de aceitar
+            btnGirar.style.display = 'none';
+            btnAceitar.style.display = 'block';
+        }
+
+        function aceitarDestino() {
+            alert("O universo falou, tá falado! Não podemos contrariar o destino. Te aguardo! ❤️🔥");
+            
+            // Opcional: Redirecionamento para o WhatsApp
+            // const textoZap = "A roleta do destino decidiu por nós! Tô indo me preparar... 😏🔥";
+            // window.location.href = "https://wa.me/55DDDSEUNUMERO?text=" + encodeURIComponent(textoZap);
+        }
+    </script>
+
+</body>
+</html>
